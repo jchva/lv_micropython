@@ -28,9 +28,6 @@ jobs:
         make -C ports/esp32 submodules
         make -C ports/esp32 BOARD=ESP32_GENERIC
 
-    - name: Verificar archivos generados
-      run: ls -lh ports/esp32/build
-
     - name: Subir firmware compilado
       uses: actions/upload-artifact@v4
       with:
