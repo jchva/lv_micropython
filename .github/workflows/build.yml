@@ -26,7 +26,7 @@ jobs:
         ~/esp-idf/install.sh
         source ~/esp-idf/export.sh
         make -C ports/esp32 submodules
-        make -C ports/esp32 BOARD=ESP32_GENERIC_SPIRAM
+        make -C ports/esp32 BOARD=ESP32_GENERIC
 
     - name: Subir firmware compilado
       uses: actions/upload-artifact@v4
