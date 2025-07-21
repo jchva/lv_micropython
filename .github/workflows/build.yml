@@ -22,7 +22,7 @@ jobs:
 
     - name: Instalar ESP-IDF y compilar MicroPython
       run: |
-        git clone --recursive https://github.com/espressif/esp-idf.git ~/esp-idf -b v5.0
+        git clone --recursive https://github.com/espressif/esp-idf.git ~/esp-idf -b v5.0.4
         ~/esp-idf/install.sh
         source ~/esp-idf/export.sh
         make -C ports/esp32 submodules
