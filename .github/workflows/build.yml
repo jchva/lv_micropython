@@ -7,33 +7,33 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: lv_micropython/ports/esp32
-
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repo con submódulos
+      uses: actions/checkout@v3
       with:
         submodules: recursive
 
-    - name: Setup ESP-IDF
-      uses: espressif/esp-idf-ci-action@v1
-      with:
-        esp_idf_version: v5.0
-
-    - name: Install dependencies
+    - name: Instalar dependencias
       run: |
         sudo apt update
-        sudo apt install -y make ninja-build python3-pip cmake
-        pip install virtualenv
+        sudo apt install -y python3-pip git cmake ninja-build libffi-dev \
+            libssl-dev dfu-util libusb-1.0-0 libusb-1.0-0-dev \
+            python3-virtualenv python3-venv build-essential flex bison gperf
 
-    - name: Build firmware
+    - name: Instalar ESP-IDF
       run: |
-        . $IDF_PATH/export.sh
-        make submodules
-        make BOARD=ESP32_GENERIC_SPIRAM
+        git clone --recursive https://github.com/espressif/esp-idf.git ~/esp-idf -b v5.0
+        ~/esp-idf/install.sh
+        echo "source ~/esp-idf/export.sh" >> $GITHUB_ENV
 
-    - name: Upload Artifacts
+    - name: Compilar MicroPython con LVGL para ESP32
+      run: |
+        source ~/esp-idf/export.sh
+        cd lv_micropython
+        make -C ports/esp32 submodules
+        make -C ports/esp32 BOARD=ESP32_GENERIC_SPIRAM
+
+    - name: Subir firmware compilado
       uses: actions/upload-artifact@v4
       with:
         name: esp32-firmware
