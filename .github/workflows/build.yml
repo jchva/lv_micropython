@@ -25,7 +25,6 @@ jobs:
         git clone --recursive https://github.com/espressif/esp-idf.git ~/esp-idf -b v5.0
         ~/esp-idf/install.sh
         source ~/esp-idf/export.sh
-        cd lv_micropython
         make -C ports/esp32 submodules
         make -C ports/esp32 BOARD=ESP32_GENERIC_SPIRAM
 
