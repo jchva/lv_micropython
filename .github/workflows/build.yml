@@ -20,14 +20,10 @@ jobs:
             libssl-dev dfu-util libusb-1.0-0 libusb-1.0-0-dev \
             python3-virtualenv python3-venv build-essential flex bison gperf
 
-    - name: Instalar ESP-IDF
+    - name: Instalar ESP-IDF y compilar MicroPython
       run: |
         git clone --recursive https://github.com/espressif/esp-idf.git ~/esp-idf -b v5.0
         ~/esp-idf/install.sh
-        echo "source ~/esp-idf/export.sh" >> $GITHUB_ENV
-
-    - name: Compilar MicroPython con LVGL para ESP32
-      run: |
         source ~/esp-idf/export.sh
         cd lv_micropython
         make -C ports/esp32 submodules
