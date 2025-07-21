@@ -7,6 +7,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: lv_micropython/ports/esp32
+
     steps:
     - uses: actions/checkout@v3
       with:
@@ -17,12 +21,14 @@ jobs:
       with:
         esp_idf_version: v5.0
 
-    - name: Build firmware
+    - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install -y cmake ninja-build python3 python3-pip make
+        sudo apt install -y make ninja-build python3-pip cmake
         pip install virtualenv
-        cd ports/esp32
+
+    - name: Build firmware
+      run: |
         . $IDF_PATH/export.sh
         make submodules
         make BOARD=ESP32_GENERIC_SPIRAM
@@ -31,11 +37,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: esp32-firmware
-        path: ports/esp32/build/*.bin
-
-
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: esp32-firmware
-        path: ports/esp32/build/*.bin
+        path: lv_micropython/ports/esp32/build/*.bin
